@@ -12,8 +12,9 @@ STEP = 10
 TILE_WIDTH = TILE_HEIGHT = 90
 
 
-
-proverka_inv = 1
+font = pygame.font.Font(None, 20)
+text = font.render("Game over!", True, [255, 255, 255])
+textpos = (10, 10)
 
 
 location = 0
@@ -23,16 +24,21 @@ clock = pygame.time.Clock()
 timer = pygame.time.Clock()
 
 
-buy_group = pygame.sprite.Group()
-shop_group = pygame.sprite.Group()
-all_sprites = pygame.sprite.Group()
-monsters_group = pygame.sprite.Group()
 tiles_group = pygame.sprite.Group()
-player_group = pygame.sprite.Group()
-walls_group = pygame.sprite.Group()
-inv_group = pygame.sprite.Group()
-decor_group = pygame.sprite.Group()
-fight_group = pygame.sprite.Group()
+
+def load_image(name, colorkey=None):
+    fullname = os.path.join('data', name)
+    try:
+        image = pygame.image.load(fullname)
+    except pygame.error as message:
+        print('Cannot load image: ', name)
+        raise SystemExit(message)
+    image = image.convert_alpha()
+    if colorkey is not None:
+        if colorkey is -1:
+            colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey)
+    return image
 
 
 def terminate():
@@ -42,14 +48,6 @@ def terminate():
 
 running = True
 while running:
-
-    decor_group.draw(screen)
-    monsters_group.draw(screen)
-    walls_group.draw(screen)
-    player_group.draw(screen)
-    buy_group.draw(screen)
-    inv_group.draw(screen)
-    fight_group.draw(screen)
-    pygame.display.flip()
+    tiles_group.draw(screen)
     clock.tick(FPS)
 terminate()
